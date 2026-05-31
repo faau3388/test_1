@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>texiishop - Tienda Exclusiva</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #e2e8f0; /* Fondo ligeramente más oscuro para dar mayor contraste al relieve */
+            --primary-red: #e11d48; /* Red 600 */
+            --primary-red-dark: #be123c; /* Red 700 */
+            --primary-red-light: #fda4af; /* Red 300 */
+            --shadow-dark: rgba(148, 163, 184, 0.65); /* Sombras oscuras más profundas para mayor contraste */
+            --shadow-light: rgba(255, 255, 255, 0.95); /* Luces blancas limpias */
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: #1f2937; /* Texto principal más oscuro para mejorar contraste */
+        }
+
+        /* Neumorfismo de Alto Contraste */
+        .neu-flat {
+            background: var(--bg-color);
+            box-shadow: 10px 10px 20px var(--shadow-dark), 
+                        -10px -10px 20px var(--shadow-light);
+        }
+
+        .neu-inset {
+            background: var(--bg-color);
+            box-shadow: inset 6px 6px 12px var(--shadow-dark), 
+                        inset -6px -6px 12px var(--shadow-light);
+        }
+
+        /* Híbrido: Neumorfismo + Glassmorfismo (Vidrio Esmerilado) */
+        .glass-neu {
+            background: rgba(226, 232, 240, 0.75); /* Translúcido */
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 10px 10px 20px rgba(148, 163, 184, 0.5), 
+                        -10px -10px 20px var(--shadow-light);
+        }
+
+        /* Glassmorfismo Absoluto para Header Anclado */
+        .glass-absolute {
+            background: rgba(226, 232, 240, 0.4); /* Ultra translúcido */
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px -10px rgba(148, 163, 184, 0.5);
+        }
+
+        .glass-neu-button {
+            background: rgba(226, 232, 240, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 6px 6px 12px rgba(148, 163, 184, 0.45), 
+                        -6px -6px 12px var(--shadow-light);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-neu-button:hover {
+            box-shadow: 3px 3px 6px rgba(148, 163, 184, 0.45), 
+                        -3px -3px 6px var(--shadow-light);
+            transform: translateY(1px);
+            background: rgba(226, 232, 240, 0.8);
+        }
+
+        .glass-neu-button:active, .glass-neu-button.active {
+            box-shadow: inset 4px 4px 8px var(--shadow-dark), 
+                        inset -4px -4px 8px var(--shadow-light);
+            transform: translateY(2px);
+        }
+
+        /* Neumorfismo Rojo para CTA con Extra Contraste */
+        .neu-red {
+            background: var(--primary-red);
+            color: white;
+            box-shadow: 6px 6px 14px rgba(225, 29, 72, 0.45), 
+                        -6px -6px 12px var(--shadow-light);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .neu-red:hover {
+            background: var(--primary-red-dark);
+            box-shadow: 3px 3px 6px rgba(225, 29, 72, 0.45), 
+                        -3px -3px 6px var(--shadow-light);
+            transform: translateY(1px);
+        }
+
+        .neu-red:active {
+            box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.4);
+            transform: translateY(2px);
+        }
+
+        /* Estilización de Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased pb-8 pt-28">
+
+    <!-- HEADER / BARRA DE NAVEGACIÓN ANCLADA CON GLASSMORFISMO ABSOLUTO -->
+    <header class="fixed top-0 left-0 right-0 z-40 glass-absolute px-4 sm:px-6 lg:px-8 py-4 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 rounded-xl glass-neu-button flex items-center justify-center text-rose-600 font-extrabold text-xl">
+                    T
+                </div>
+                <span class="text-xl font-extrabold tracking-tight text-gray-900">
+                    texii<span class="text-rose-600">shop</span>
+                </span>
+            </a>
+
+            <!-- Carrito Trigger -->
+            <button onclick="toggleCart()" class="glass-neu-button relative p-3 rounded-xl flex items-center justify-center text-gray-800">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span id="cart-badge" class="absolute -top-1 -right-1 bg-rose-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold hidden">
+                    0
+                </span>
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO / BIENVENIDA -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-4 text-center">
+        <div class="glass-neu rounded-3xl p-8 md:p-12 mb-4">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight leading-tight">
+                Estilo Básico, Compra Directa
+            </h1>
+            <p class="text-gray-600 max-w-xl mx-auto text-sm md:text-base font-medium">
+                Elige tus básicos favoritos de uso diario y ordénalos de forma inmediata.
+            </p>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE PRODUCTOS (EXACTAMENTE 4 PRODUCTOS) -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="products-container">
+            <!-- Los productos se generan dinámicamente mediante JS -->
+        </div>
+    </main>
+
+    <!-- FOOTER / PIE DE PÁGINA -->
+    <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-auto">
+        <div class="glass-neu rounded-2xl p-6 flex justify-center items-center text-center">
+            <div>
+                <p class="text-gray-900 font-bold text-sm">© 2026 TexiiShop. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CARRITO DRAWER (SLIDEOVER MODAL) -->
+    <div id="cart-drawer" class="fixed inset-0 bg-slate-900/40 backdrop-blur-md z-50 transition-opacity duration-300 opacity-0 pointer-events-none">
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-slate-100/90 backdrop-blur-xl h-full shadow-2xl p-6 flex flex-col transition-transform duration-300 translate-x-full" id="cart-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-extrabold text-gray-900 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg neu-inset flex items-center justify-center text-rose-600 font-bold">🛒</span>
+                    Tu Pedido
+                </h3>
+                <button onclick="toggleCart()" class="glass-neu-button p-2 rounded-xl text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Lista de Artículos -->
+            <div class="flex-1 overflow-y-auto space-y-4 pr-1" id="cart-items">
+                <!-- Se inyecta dinámicamente -->
+                <div class="text-center py-12 text-gray-500">
+                    <p class="text-lg font-bold">Tu carrito está vacío</p>
+                    <p class="text-xs mt-1">¡Agrega algunos de nuestros productos básicos!</p>
+                </div>
+            </div>
+
+            <!-- Total y Botón de Enviar -->
+            <div class="mt-6 border-t border-slate-300 pt-6">
+                <div class="neu-inset rounded-2xl p-4 mb-4">
+                    <div class="flex justify-between text-gray-700 text-sm mb-2 font-medium">
+                        <span>Subtotal estimado</span>
+                        <span id="cart-subtotal" class="font-extrabold">$0.00</span>
+                    </div>
+                    <div class="flex justify-between text-gray-950 font-black text-base">
+                        <span>Total de tu Compra</span>
+                        <span id="cart-total" class="font-black text-rose-600">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="client-name" class="block text-xs font-bold text-gray-700 mb-1.5 ml-1">Tu Nombre (Opcional):</label>
+                    <input type="text" id="client-name" placeholder="Ej: Alejandra Pérez" class="w-full px-4 py-3 rounded-xl neu-inset text-sm text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-rose-500 bg-transparent border-none">
+                </div>
+
+                <button onclick="checkoutViaWhatsApp()" class="w-full neu-red font-bold py-4 rounded-2xl flex items-center justify-center gap-3">
+                    Confirmar Pedido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICACIÓN FLOTANTE -->
+    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 glass-neu px-6 py-3.5 rounded-2xl flex items-center gap-3 border-l-4 border-rose-500 z-50 transition-all duration-300 opacity-0 translate-y-10 pointer-events-none">
+        <div class="text-rose-600 font-bold" id="toast-icon">✨</div>
+        <div class="text-sm font-black text-gray-900" id="toast-message">Producto agregado</div>
+    </div>
+
+    <!-- SCRIPTS DE INTERACCIÓN -->
+    <script>
+        const WHATSAPP_PHONE = "573000000000"; // Reemplaza con tu número de WhatsApp real (formato internacional)
+        
+        // Catálogo de exactamente 4 productos básicos abstractos sin tallas ni colores.
+        const PRODUCTS = [
+            {
+                id: "p1",
+                name: "Producto 01",
+                price: 24.99,
+                desc: "Solución de diseño limpio y minimalista creada para optimizar tu orden diario.",
+                svg: `<svg viewBox="0 0 100 100" class="w-24 h-24 text-rose-600" fill="currentColor">
+                        <circle cx="50" cy="50" r="30" />
+                        <rect x="40" y="40" width="20" height="20" fill="#ffffff" />
+                      </svg>`
+            },
+            {
+                id: "p2",
+                name: "Producto 02",
+                price: 49.99,
+                desc: "Elemento estructural de alta precisión con acabados pulidos y gran versatilidad.",
+                svg: `<svg viewBox="0 0 100 100" class="w-24 h-24 text-rose-600" fill="currentColor">
+                        <rect x="25" y="25" width="50" height="50" rx="10" />
+                        <circle cx="50" cy="50" r="12" fill="#e2e8f0" />
+                      </svg>`
+            },
+            {
+                id: "p3",
+                name: "Producto 03",
+                price: 18.50,
+                desc: "Soporte multifuncional diseñado para encajar elegantemente en cualquier entorno moderno.",
+                svg: `<svg viewBox="0 0 100 100" class="w-24 h-24 text-rose-600" fill="currentColor">
+                        <polygon points="50,20 80,75 20,75" />
+                        <circle cx="50" cy="58" r="8" fill="#ffffff" />
+                      </svg>`
+            },
+            {
+                id: "p4",
+                name: "Producto 04",
+                price: 12.00,
+                desc: "Módulo complementario ultraligero que equilibra estética pura y practicidad absoluta.",
+                svg: `<svg viewBox="0 0 100 100" class="w-24 h-24 text-rose-600" fill="currentColor">
+                        <path d="M50 15 L80 45 L50 75 L20 45 Z" />
+                        <circle cx="50" cy="45" r="10" fill="#9f1239" opacity="0.8" />
+                      </svg>`
+            }
+        ];
+
+        // ESTADO GLOBAL
+        let cart = [];
+
+        // RENDERIZAR PRODUCTOS
+        function renderProducts() {
+            const container = document.getElementById("products-container");
+            container.innerHTML = "";
+
+            PRODUCTS.forEach(p => {
+                const productCard = `
+                    <div class="glass-neu rounded-3xl p-5 flex flex-col justify-between h-full group">
+                        <!-- Imagen/Ilustración Neumórfica -->
+                        <div class="neu-inset rounded-2xl p-6 flex items-center justify-center relative mb-4 h-52">
+                            <div class="transform transition-transform duration-300 group-hover:scale-110">
+                                ${p.svg}
+                            </div>
+                        </div>
+
+                        <!-- Detalles -->
+                        <div class="mb-4">
+                            <div class="flex justify-between items-start gap-2 mb-2">
+                                <h2 class="font-extrabold text-gray-900 text-lg group-hover:text-rose-600 transition-colors">
+                                    ${p.name}
+                                </h2>
+                                <span class="text-rose-600 font-extrabold text-base whitespace-nowrap bg-rose-50/80 backdrop-blur-sm px-2 py-1 rounded-lg border border-rose-100">
+                                    $${p.price.toFixed(2)}
+                                </span>
+                            </div>
+                            <p class="text-xs text-gray-600 font-medium leading-relaxed">
+                                ${p.desc}
+                            </p>
+                        </div>
+
+                        <!-- Acciones directas -->
+                        <div class="space-y-3 mt-auto">
+                            <button onclick="addToCart('${p.id}')" class="w-full glass-neu-button font-bold text-xs py-3 rounded-xl text-gray-800 flex items-center justify-center gap-2">
+                                <span>🛒</span> Añadir al Carrito
+                            </button>
+                            <button onclick="buyInstantly('${p.id}')" class="w-full neu-red font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-2">
+                                Comprar Ahora
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', productCard);
+            });
+        }
+
+        // LÓGICA DEL CARRITO
+        function addToCart(prodId) {
+            const product = PRODUCTS.find(p => p.id === prodId);
+            const existingIndex = cart.findIndex(item => item.id === prodId);
+
+            if (existingIndex > -1) {
+                cart[existingIndex].qty += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    qty: 1
+                });
+            }
+
+            updateCartUI();
+            showToast(`¡Añadido! ${product.name} al carrito.`);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function changeQty(index, amount) {
+            cart[index].qty += amount;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById("cart-items");
+            const badge = document.getElementById("cart-badge");
+            
+            const totalUnits = cart.reduce((acc, item) => acc + item.qty, 0);
+            
+            if (totalUnits > 0) {
+                badge.innerText = totalUnits;
+                badge.classList.remove("hidden");
+            } else {
+                badge.classList.add("hidden");
+            }
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-12 text-gray-500">
+                        <p class="text-lg font-bold">Tu carrito está vacío</p>
+                        <p class="text-xs mt-1">¡Agrega algunos de nuestros productos básicos!</p>
+                    </div>
+                `;
+                document.getElementById("cart-subtotal").innerText = "$0.00";
+                document.getElementById("cart-total").innerText = "$0.00";
+                return;
+            }
+
+            let html = "";
+            let totalVal = 0;
+
+            cart.forEach((item, index) => {
+                const sub = item.price * item.qty;
+                totalVal += sub;
+                
+                html += `
+                    <div class="glass-neu rounded-2xl p-4 flex gap-3 items-center justify-between">
+                        <div class="flex-1">
+                            <h4 class="font-extrabold text-sm text-gray-900 leading-tight">${item.name}</h4>
+                            <span class="text-xs text-rose-600 font-extrabold mt-1 inline-block">
+                                $${item.price.toFixed(2)} c/u
+                            </span>
+                        </div>
+
+                        <!-- Cantidad y control -->
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeQty(${index}, -1)" class="w-7 h-7 rounded-lg glass-neu-button text-xs font-bold flex items-center justify-center">-</button>
+                            <span class="text-xs font-bold text-gray-800 w-4 text-center">${item.qty}</span>
+                            <button onclick="changeQty(${index}, 1)" class="w-7 h-7 rounded-lg glass-neu-button text-xs font-bold flex items-center justify-center">+</button>
+                            
+                            <button onclick="removeFromCart(${index})" class="text-rose-600 ml-1 p-1 hover:bg-rose-50 rounded-lg transition-colors" title="Eliminar">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            cartItemsContainer.innerHTML = html;
+            document.getElementById("cart-subtotal").innerText = `$${totalVal.toFixed(2)}`;
+            document.getElementById("cart-total").innerText = `$${totalVal.toFixed(2)}`;
+        }
+
+        // DRAWER INTERACTION
+        function toggleCart() {
+            const drawer = document.getElementById("cart-drawer");
+            const content = document.getElementById("cart-content");
+
+            if (drawer.classList.contains("opacity-0")) {
+                drawer.classList.remove("opacity-0", "pointer-events-none");
+                content.classList.remove("translate-x-full");
+            } else {
+                drawer.classList.add("opacity-0", "pointer-events-none");
+                content.classList.add("translate-x-full");
+            }
+        }
+
+        // TOAST NOTIFICATIONS
+        function showToast(msg) {
+            const toast = document.getElementById("toast");
+            const messageEl = document.getElementById("toast-message");
+            messageEl.innerText = msg;
+            
+            toast.classList.remove("opacity-0", "translate-y-10", "pointer-events-none");
+            
+            setTimeout(() => {
+                toast.classList.add("opacity-0", "translate-y-10", "pointer-events-none");
+            }, 3000);
+        }
+
+        // ENVIOS
+        function buyInstantly(prodId) {
+            const product = PRODUCTS.find(p => p.id === prodId);
+            
+            const message = `¡Hola! Me interesa adquirir este básico desde el catálogo:
+            
+📦 *Producto:* ${product.name}
+💵 *Precio:* $${product.price.toFixed(2)}`;
+
+            const encodedMsg = encodeURIComponent(message);
+            window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${encodedMsg}`, "_blank");
+        }
+
+        function checkoutViaWhatsApp() {
+            if (cart.length === 0) {
+                showToast("⚠️ Agrega al menos un artículo antes de enviar.");
+                return;
+            }
+
+            const clientNameInput = document.getElementById("client-name").value.trim();
+            const clientNameLine = clientNameInput ? `👤 *Cliente:* ${clientNameInput}\n` : '';
+
+            let itemLines = "";
+            let total = 0;
+
+            cart.forEach((item) => {
+                const sub = item.price * item.qty;
+                total += sub;
+                itemLines += `👉 *${item.qty}x* ${item.name} - _($${sub.toFixed(2)})_\n`;
+            });
+
+            const message = `🤖 *PEDIDO ENTRANTE - TexiiShop* 🤖
+${clientNameLine}
+Se ha generado la siguiente solicitud de compra:
+
+${itemLines}
+💰 *TOTAL:* $${total.toFixed(2)}`;
+
+            const encodedMsg = encodeURIComponent(message);
+            window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${encodedMsg}`, "_blank");
+        }
+
+        document.getElementById("cart-drawer").addEventListener("click", function(e) {
+            if (e.target === this) {
+                toggleCart();
+            }
+        });
+
+        // INICIAR TIENDA
+        window.onload = function() {
+            renderProducts();
+        };
+    </script>
+</body>
+</html>
